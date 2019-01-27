@@ -8,19 +8,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
+import firebase from '../firebase';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: '',
+      error: ''
+    }
+  }
+
   static navigationOptions = {
     header: null,
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <View style={styles.container} >
+      <FormLabel>Email</FormLabel>
+      <FormInput onChangeText={(input) => this.setState({email: input})} />
+      <FormLabel justifyCotextAlignVerticalntent='center'>Password</FormLabel>
+      <FormInput textAlignVertical='center' secureTextEntry={true} password={true} onChangeText={(input) => this.setState({password: input})} />
+      {this.state.error.length > 0 ? 
+        <FormValidationMessage>{this.state.error}</FormValidationMessage>
+        : null
+      }
+      <Button textAlignVertical='center' title='SUBMIT' onPress={this.handlePress} />
+
+    
+
+        {/* <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
               source={
@@ -30,9 +53,9 @@ export default class HomeScreen extends React.Component {
               }
               style={styles.welcomeImage}
             />
-          </View>
+          </View> */}
 
-          <View style={styles.getStartedContainer}>
+          {/* <View style={styles.getStartedContainer}>
             {this._maybeRenderDevelopmentModeWarning()}
 
             <Text style={styles.getStartedText}>Get started by opening</Text>
@@ -44,65 +67,78 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.getStartedText}>
               Change this text and your app will automatically reload.
             </Text>
-          </View>
+          </View> */}
 
-          <View style={styles.helpContainer}>
+          {/* <View style={styles.helpContainer}>
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
               <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        </ScrollView> */}
 
-        <View style={styles.tabBarInfoContainer}>
+        {/* <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
 
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
             <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
           </View>
-        </View>
+        </View> */}
       </View>
     );
   }
 
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
+  // _maybeRenderDevelopmentModeWarning() {
+  //   if (__DEV__) {
+  //     const learnMoreButton = (
+  //       <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
+  //         Learn more
+  //       </Text>
+  //     );
 
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
+  //     return (
+  //       <Text style={styles.developmentModeText}>
+  //         Development mode is enabled, your app will be slower but you can use useful development
+  //         tools. {learnMoreButton}
+  //       </Text>
+  //     );
+  //   } else {
+  //     return (
+  //       <Text style={styles.developmentModeText}>
+  //         You are not in development mode, your app will run at full speed.
+  //       </Text>
+  //     );
+  //   }
+  // }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
+//   _handleLearnMorePress = () => {
+//     WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
+//   };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
+//   _handleHelpPress = () => {
+//     WebBrowser.openBrowserAsync(
+//       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
+//     );
+//   };
+
+      handlePress = async () => {
+        // const provider = new firebase.auth.GoogleAuthProvider();
+        // firebase.auth().signInWithRedirect(provider);
+        try {
+          await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        } catch (err) {
+          // console.error(err)
+          this.setState({error: err.message})
+        }
+      }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
@@ -185,4 +221,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+  button: {
+    backgroundColor: '#2FD566',
+    padding: 20
+  },
+  buttonText: {
+    color: '#000',
+    fontSize: 20
+  }
 });
