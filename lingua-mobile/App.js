@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import TabNav from './components/TabNav'
 
 import Login from './components/Login';
 import Register from './components/Register';

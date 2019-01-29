@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import firebase from '../firebase';
+import AllWordsScreen from './AllWordsScreen'
+import FlashCardScreen from './FlashCardScreen'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
-export default class Component1 extends Component {
+class Component1 extends Component {
   render() {
     return (
     <View>
@@ -16,3 +19,12 @@ export default class Component1 extends Component {
     )
   }
 }
+
+const TabNavigator = createBottomTabNavigator({
+  Component1,
+  AllWords: AllWordsScreen,
+  FlashCards: FlashCardScreen
+});
+
+
+export default createAppContainer(TabNavigator);
