@@ -9,10 +9,9 @@
   },
   "options_page": "options.html",
   "background": {
-    "scripts": ["eventPage.js"],
+    "page": "background.html",
     "persistent": true
   },
   "permissions": ["storage", "notifications", "contextMenus"],
-
-  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'; connect-src 'self' wss://*.firebaseio.com;"
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://translate.yandex.net https://www.googleapis.com; object-src 'self'"
 }
