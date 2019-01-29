@@ -9,7 +9,7 @@
   },
   "options_page": "options.html",
   "background": {
-    "scripts": ["eventPage.js"],
+    "page": "background.html",
     "persistent": true
   },
   "permissions": ["storage", "notifications", "contextMenus"],
