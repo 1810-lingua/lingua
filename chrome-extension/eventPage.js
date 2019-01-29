@@ -37,13 +37,16 @@ chrome.contextMenus.onClicked.addListener(async function(clickData) {
     console.log(selection);
     let translatedSelection = await translate(selection);
     console.log("translatedText:" + translatedSelection);
-    chrome.storage.sync.get(["total", "words"], async function(items) {
+    chrome.storage.sync.get(["total", "words"], function(items) {
+      if (!items.words) {
+        items.words = [];
+      }
       let newTotal = items.total + 1 || 1;
       let newWords = [
         ...items.words,
         { translation: translatedSelection, word: selection }
       ];
-      await chrome.storage.sync.set({ total: newTotal, words: newWords });
+      chrome.storage.sync.set({ total: newTotal, words: newWords });
     });
   }
 });
