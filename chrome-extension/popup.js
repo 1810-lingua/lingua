@@ -8,7 +8,7 @@ $(function() {
     messagingSenderId: "349838454101"
   };
   firebase.initializeApp(config);
-  const db = firebase.database();
+  // const db = firebase.database();
 
   document.getElementById("loginButton").addEventListener("click", login);
 
@@ -16,9 +16,8 @@ $(function() {
     evt.preventDefault();
     const email = $("#username").val();
     const password = $("#password").val();
-    const auth = firebase.auth();
     try {
-      const token = await auth.signInWithEmailAndPassword(email, password);
+      await firebase.auth().signInWithEmailAndPassword(email, password);
       chrome.storage.sync.set({ login: "true" });
     } catch (error) {
       // Handle Errors here.
@@ -31,9 +30,8 @@ $(function() {
     evt.preventDefault();
     const email = $("#username").val();
     const password = $("#password").val();
-    const auth = firebase.auth();
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
       chrome.storage.sync.set({ login: "true" });
     } catch (error) {
       // Handle Errors here.
@@ -51,8 +49,8 @@ $(function() {
     $("#login").html(`<div class="log-form">
     <h2>Sign Up for your account</h2>
     <div id='authform'>
-      <input type="email" title="email" id="username" placeholder="email" />
-      <input type="password" title="username" id="password" placeholder="password" />
+      <input type="email" title="email" id="username" name="username" placeholder="email" />
+      <input type="password" title="username" id="password" name="password" placeholder="password" />
       <button type="submit" id="gotAuth" class="btn">Submit</button>
     </div>
   </div>`);
@@ -65,8 +63,8 @@ $(function() {
     document.getElementById("login").innerHTML = `<div class="log-form">
     <h2>Login to your account</h2>
     <div id='authform'>
-      <input type="text" title="username" id="username" placeholder="username" />
-      <input type="password" id="password" title="username" placeholder="password" />
+      <input type="text" title="username" id="username" name="username" placeholder="username" />
+      <input type="password" id="password" title="username" name="password" placeholder="password" />
       <button type="submit" id="gotAuth" class="btn">Login</button>
       <a class="forgot" href="#">Forgot Username?</a>
     </div>

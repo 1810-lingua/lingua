@@ -9,9 +9,7 @@ const config = {
   messagingSenderId: "349838454101"
 };
 
-const app = firebase.initializeApp(config);
-const auth = app.auth();
-const db = app.database();
+firebase.initializeApp(config);
 
 /**
  * initApp handles setting up the Firebase context and registering
@@ -34,7 +32,7 @@ function initApp() {
       "User state change detected from the Background script of the Chrome Extension:",
       user
     );
-    if (user.email) {
+    if (user && user.email) {
       //send something the popup html document object
     }
   });
