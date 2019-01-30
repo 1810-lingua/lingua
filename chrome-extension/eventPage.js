@@ -34,9 +34,17 @@ chrome.contextMenus.onClicked.addListener(async function(clickData) {
   let selection = clickData.selectionText;
   console.log(selection);
   if (clickData.menuItemId == "Lingua" && selection) {
-    console.log(selection);
     let translatedSelection = await translate(selection);
     console.log("translatedText:" + translatedSelection);
+    chrome.storage.sync.get(["userid"], user => {
+      const newRef = firebase.database().ref(`/${user.userid}/${selection}/`);
+      newRef.set({
+        word: selection,
+        translation: translatedSelection[0],
+        learned: false
+      });
+    });
+
     chrome.storage.sync.get(["total", "words"], function(items) {
       if (!items.words) {
         items.words = [];

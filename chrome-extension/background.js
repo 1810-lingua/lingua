@@ -1,15 +1,5 @@
 // TODO(DEVELOPER): Change the values below using values from the initialization snippet: Firebase Console > Overview > Add Firebase to your web app.
 // Initialize Firebase
-const config = {
-  apiKey: "AIzaSyBOGOfm3qgA0x8O_f-a3ButyIhyeFwb1V8",
-  authDomain: "lingua-632b7.firebaseapp.com",
-  databaseURL: "https://lingua-632b7.firebaseio.com",
-  projectId: "lingua-632b7",
-  storageBucket: "lingua-632b7.appspot.com",
-  messagingSenderId: "349838454101"
-};
-
-firebase.initializeApp(config);
 
 /**
  * initApp handles setting up the Firebase context and registering
@@ -25,14 +15,23 @@ firebase.initializeApp(config);
  *
  * When signed in, we also authenticate to the Firebase Realtime Database.
  */
+var config = {
+  apiKey: "AIzaSyBOGOfm3qgA0x8O_f-a3ButyIhyeFwb1V8",
+  authDomain: "lingua-632b7.firebaseapp.com",
+  databaseURL: "https://lingua-632b7.firebaseio.com",
+  projectId: "lingua-632b7",
+  storageBucket: "lingua-632b7.appspot.com",
+  messagingSenderId: "349838454101"
+};
+firebase.initializeApp(config);
 function initApp() {
   // Listen for auth state changes.
   // firebase.auth().onAuthStateChanged(async function(user) {
   //   //
   //   );
-  if (user && user.email) {
-    const uid = user.uid;
-  }
+  // if (user && user.email) {
+  //   const uid = user.uid;
+  // }
 }
 
 window.onload = function() {
