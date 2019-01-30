@@ -1,23 +1,21 @@
-let menuItem = {
+const menuItem = {
   id: "Lingua",
   title: "Add Word to Lingua",
   contexts: ["selection"]
 };
 
-async function translate(word) {
-  let api =
+const translate = async (word) => {
+  const apiKey =
     "trnsl.1.1.20190126T211920Z.755eef10f6ae2719.f84530139cfd895621304f2b1ed34456a340ebb6";
-  let baseurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
-  let text = "&text=";
-  let lang = "&lang=es";
+  const baseUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
+  const text = "&text=";
+  const lang = "&lang=es";
 
-  let fullUrl = baseurl + api + lang + text + word;
+  const fullUrl = baseUrl + apiKey + lang + text + word;
   try {
-    request = new Request(fullUrl, { method: "GET" });
-
-    let response = await fetch(request);
-    let text = await response.text();
-
+    const request = new Request(fullUrl, { method: "GET" });
+    const response = await fetch(request);
+    const text = await response.text();
     return JSON.parse(text).text;
   } catch (err) {
     console.log("Error: " + err);
@@ -26,7 +24,7 @@ async function translate(word) {
 
 chrome.contextMenus.create(menuItem);
 
-chrome.contextMenus.onClicked.addListener(async function(clickData) {
+chrome.contextMenus.onClicked.addListener(async (clickData) => {
   let selection = clickData.selectionText;
   if (clickData.menuItemId == "Lingua" && selection) {
     let translatedSelection = await translate(selection);
@@ -39,7 +37,7 @@ chrome.contextMenus.onClicked.addListener(async function(clickData) {
       });
     });
 
-    chrome.storage.sync.get(["total", "words"], function(items) {
+    chrome.storage.sync.get(["total", "words"], (items) => {
       if (!items.words) {
         items.words = [];
       }
