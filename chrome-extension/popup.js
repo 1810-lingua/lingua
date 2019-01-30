@@ -1,4 +1,5 @@
 $(function() {
+  let dictionary = {};
   var config = {
     apiKey: "AIzaSyBOGOfm3qgA0x8O_f-a3ButyIhyeFwb1V8",
     authDomain: "lingua-632b7.firebaseapp.com",
@@ -41,8 +42,20 @@ $(function() {
     }
   }
 
-  firebase.auth().onAuthStateChanged(firebaseUser => {
-    if (firebaseUser) console.log(firebaseUser);
+  firebase.auth().onAuthStateChanged(async firebaseUser => {
+    if (firebaseUser) {
+      console.log(firebaseUser.uid);
+      dictionary = {};
+      const { uid } = firebase.auth().currentUser;
+      await firebase
+        .database()
+        .ref(`/users/${uid}`)
+        .on("value", function(word) {
+          chrome.storage.sync.set({ words: word.val(), userid: uid });
+          const msg = { txt: "got words", words: word.val(), userid: uid };
+          chrome.tabs.sendMessage(tab.id, msg);
+        });
+    }
   });
 
   $("#signup").click(() => {
