@@ -69,21 +69,21 @@ $(function() {
     });
   });
 
-  login = () => {
-    document.getElementById("login").innerHTML = `
+  $("#login-button").click(() => {
+    $("#login").html(`
       <div class="log-form">
-        <h2>Login to your account</h2>
+        <h2>Sign In to your account</h2>
         <div id='authform'>
-          <input type="text" title="username" id="username" name="username" placeholder="username" />
-          <input type="password" id="password" title="username" name="password" placeholder="password" />
-          <button type="submit" id="gotAuth" class="btn">Login</button>
-          <a class="forgot" href="#">Forgot Username?</a>
+          <input type="email" title="email" id="username" name="username" placeholder="email" />
+          <input type="password" title="username" id="password" name="password" placeholder="password" />
+          <button type="submit" id="gotAuth" class="btn">Submit</button>
         </div>
-      </div>`;
-    document
-      .getElementById("gotAuth")
-      .addEventListener("click", event => handleSendAuth(event));
-  }
+      </div>
+    `);
+    $("#gotAuth").click(event => {
+      handleSendAuth(event);
+    });
+  });
 
   chrome.storage.sync.get(["total", "words"], (items) => {
     $("#total").text(items.total);
