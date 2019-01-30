@@ -10,7 +10,6 @@ const translate = async (word) => {
   const baseUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
   const text = "&text=";
   const lang = "&lang=es";
-
   const fullUrl = baseUrl + apiKey + lang + text + word;
   try {
     const request = new Request(fullUrl, { method: "GET" });
@@ -25,12 +24,12 @@ const translate = async (word) => {
 chrome.contextMenus.create(menuItem);
 
 chrome.contextMenus.onClicked.addListener(async (clickData) => {
-  let selection = clickData.selectionText;
+  const selection = clickData.selectionText;
   if (clickData.menuItemId == "Lingua" && selection) {
-    let translatedSelection = await translate(selection);
-    chrome.storage.sync.get(["userid"], user => {
+    const translatedSelection = await translate(selection);
+    chrome.storage.sync.get(["userid"], async (user) => {
       const newRef = firebase.database().ref(`/${user.userid}/${selection}/`);
-      newRef.set({
+      await newRef.set({
         word: selection,
         translation: translatedSelection[0],
         learned: false

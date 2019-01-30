@@ -58,8 +58,8 @@ $(function() {
       <div class="log-form">
         <h2>Sign Up for your account</h2>
         <div id='authform'>
-          <input type="email" title="email" id="username" name="username" placeholder="email" />
-          <input type="password" title="username" id="password" name="password" placeholder="password" />
+          <input type="email" id="username" placeholder="email" />
+          <input type="password" id="password" placeholder="password" />
           <button type="submit" id="gotAuth" class="btn">Submit</button>
         </div>
       </div>
@@ -74,8 +74,8 @@ $(function() {
       <div class="log-form">
         <h2>Sign In to your account</h2>
         <div id='authform'>
-          <input type="email" title="email" id="username" name="username" placeholder="email" />
-          <input type="password" title="username" id="password" name="password" placeholder="password" />
+          <input type="email" id="username" placeholder="email" />
+          <input type="password" id="password" placeholder="password" />
           <button type="submit" id="gotAuth" class="btn">Submit</button>
         </div>
       </div>

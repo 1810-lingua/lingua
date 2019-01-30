@@ -1,10 +1,10 @@
-const ready = () => {
+const replaceWords = () => {
   chrome.storage.sync.get(["userid", "words"], (items) => {
     const dictionary = items.words;
-    const ps = [ ...document.getElementsByTagName("p") ];
-    ps.forEach(child => {
+    const tabWords = [ ...document.getElementsByTagName("p") ];
+    tabWords.forEach(child => {
       if (child.innerText) {
-        let text = child.innerText;
+        const text = child.innerText;
         dictionary.forEach(word => {
           if (child.innerText.includes(word.word)) {
             const re = new RegExp(word.word, "g");
@@ -18,5 +18,5 @@ const ready = () => {
 }
 
 window.onload = function() {
-  ready();
+  replaceWords();
 };
