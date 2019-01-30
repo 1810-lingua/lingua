@@ -27,15 +27,12 @@ firebase.initializeApp(config);
  */
 function initApp() {
   // Listen for auth state changes.
-  firebase.auth().onAuthStateChanged(function(user) {
-    console.log(
-      "User state change detected from the Background script of the Chrome Extension:",
-      user
-    );
-    if (user && user.email) {
-      //send something the popup html document object
-    }
-  });
+  // firebase.auth().onAuthStateChanged(async function(user) {
+  //   //
+  //   );
+  if (user && user.email) {
+    const uid = user.uid;
+  }
 }
 
 window.onload = function() {

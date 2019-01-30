@@ -18,6 +18,12 @@
     "page": "background.html",
     "persistent": true
   },
-  "permissions": ["storage", "notifications", "contextMenus"],
+  "permissions": [
+    "storage",
+    "notifications",
+    "contextMenus",
+    "tabs",
+    "activeTab"
+  ],
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://translate.yandex.net https://www.googleapis.com; object-src 'self'"
 }

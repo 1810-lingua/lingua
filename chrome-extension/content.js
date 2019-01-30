@@ -1,7 +1,4 @@
-const dictionary = {};
-
 function replaceText() {
-  console.log("replaceText ran");
   chrome.storage.sync.get(["userid", "words"], function(items) {
     if (items.userid) {
       dictionary = items.words;
@@ -25,14 +22,27 @@ function replaceText() {
   });
 }
 function gotMessage(message, sender, sendResponse) {
-  console.log(message.txt);
   dictionary = message.words;
-  console.log("dictionary", dictionary);
 }
 
 function ready() {
-  console.log("are we here?");
-  chrome.runtime.onMessage.addListener(gotMessage);
+  chrome.storage.sync.get(["userid", "words"], function(items) {
+    const dictionary = items.words;
+    const ps = [...document.getElementsByTagName("p")];
+    ps.forEach(child => {
+      if (child.innerText) {
+        let text = child.innerText;
+        dictionary.forEach(word => {
+          if (child.innerText.includes(word.word)) {
+            const re = new RegExp(word.word, "g");
+            text = text.replace(re, word.translation);
+          }
+        });
+        child.innerText = text;
+      }
+    });
+  });
+  //chrome.runtime.onMessage.addListener(gotMessage);
 }
 window.onload = function() {
   ready();

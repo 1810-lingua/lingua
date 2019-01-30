@@ -44,16 +44,17 @@ $(function() {
 
   firebase.auth().onAuthStateChanged(async firebaseUser => {
     if (firebaseUser) {
-      console.log(firebaseUser.uid);
-      dictionary = {};
       const { uid } = firebase.auth().currentUser;
       await firebase
         .database()
         .ref(`/users/${uid}`)
         .on("value", function(word) {
-          chrome.storage.sync.set({ words: word.val(), userid: uid });
-          const msg = { txt: "got words", words: word.val(), userid: uid };
-          chrome.tabs.sendMessage(tab.id, msg);
+          const words = word.val();
+          chrome.storage.sync.set({ words: words, userid: uid });
+          const msg = { txt: "got words", words: words, userid: uid };
+          chrome.tabs.query({}, tabs => {
+            tabs.forEach(tab => chrome.tabs.sendMessage(tab.id, msg));
+          });
         });
     }
   });
