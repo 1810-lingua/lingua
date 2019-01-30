@@ -16,11 +16,8 @@ async function translate(word) {
     request = new Request(fullUrl, { method: "GET" });
 
     let response = await fetch(request);
-    console.log(response.text);
     let text = await response.text();
-    console.log(text);
 
-    console.log("tesssssttt: " + JSON.parse(text).text);
     return JSON.parse(text).text;
   } catch (err) {
     console.log("Error: " + err);
@@ -30,12 +27,9 @@ async function translate(word) {
 chrome.contextMenus.create(menuItem);
 
 chrome.contextMenus.onClicked.addListener(async function(clickData) {
-  console.log(clickData);
   let selection = clickData.selectionText;
-  console.log(selection);
   if (clickData.menuItemId == "Lingua" && selection) {
     let translatedSelection = await translate(selection);
-    console.log("translatedText:" + translatedSelection);
     chrome.storage.sync.get(["userid"], user => {
       const newRef = firebase.database().ref(`/${user.userid}/${selection}/`);
       newRef.set({
