@@ -21,9 +21,6 @@ function replaceText() {
     }
   });
 }
-function gotMessage(message, sender, sendResponse) {
-  dictionary = message.words;
-}
 
 function ready() {
   chrome.storage.sync.get(["userid", "words"], function(items) {
@@ -42,7 +39,6 @@ function ready() {
       }
     });
   });
-  //chrome.runtime.onMessage.addListener(gotMessage);
 }
 window.onload = function() {
   ready();

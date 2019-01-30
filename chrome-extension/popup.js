@@ -51,10 +51,6 @@ $(function() {
         .on("value", function(word) {
           const words = word.val();
           chrome.storage.sync.set({ words: words, userid: uid });
-          const msg = { txt: "got words", words: words, userid: uid };
-          chrome.tabs.query({}, tabs => {
-            tabs.forEach(tab => chrome.tabs.sendMessage(tab.id, msg));
-          });
         });
     }
   });
