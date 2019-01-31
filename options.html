@@ -2,13 +2,22 @@
 <html>
   <head>
     <title>Lingua Options</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
     <script src="jquery-3.3.1.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js" defer></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"
+      defer
+    ></script>
     <script src="options.js" defer></script>
   </head>
   <body>
-    <h1>Lingua Saved Items: <span id="total"></span></h1>
-    <div id="saved"></div>
-    <input id="reset" type="submit" value="reset" />
+    <div class="ui container">
+      <h1 class="ui header">Lingua Saved Items:</h1>
+      <div id="saved"></div>
+    </div>
   </body>
 </html>

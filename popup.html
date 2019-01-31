@@ -2,14 +2,22 @@
 <html>
   <head>
     <title>Lingua</title>
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js" defer></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+    <script
+      src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"
+      defer
+    ></script>
     <script src="jquery-3.3.1.js" defer></script>
     <script src="popup.js" defer></script>
   </head>
   <body>
-    <div id="login">
-      <button id="login-button" type="submit">Login</button>
-      <button id="signup-button" type="submit">Sign Up</button>
-    </div>
+    <div
+      class="ui raised very padded text container segment grid"
+      id="popup-form"
+    ></div>
   </body>
 </html>
