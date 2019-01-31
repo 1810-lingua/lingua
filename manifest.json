@@ -3,6 +3,12 @@
   "name": "Lingua",
   "description": "Lingua Language Learner",
   "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
@@ -12,6 +18,12 @@
     "page": "background.html",
     "persistent": true
   },
-  "permissions": ["storage", "notifications", "contextMenus"],
+  "permissions": [
+    "storage",
+    "notifications",
+    "contextMenus",
+    "tabs",
+    "activeTab"
+  ],
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://translate.yandex.net https://www.googleapis.com; object-src 'self'"
 }
