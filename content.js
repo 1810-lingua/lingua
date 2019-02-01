@@ -6,14 +6,14 @@ const replaceWords = () => {
       if (child.innerText) {
         let text = child.innerText;
         dictionary.forEach(word => {
-          if (child.innerText.includes(word.word)) {
+          if (child.innerText.includes(` ${word.word} `)) {
             if(word.learned === true){
-            let re = new RegExp(word.word, "g");
-            text = text.replace(re, word.translation);
+            let re = new RegExp(` ${word.word} `, "g");
+            text = text.replace(re, ` <span style= color:blue>${word.translation}</span> `);
             }
           }
         });
-        child.innerText = text;
+        child.innerHTML = text;
       }
     });
   });
