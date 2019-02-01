@@ -16,7 +16,8 @@ const translate = async word => {
     const request = new Request(fullUrl, { method: "GET" });
     const response = await fetch(request);
     const text = await response.text();
-    return JSON.parse(text).text;
+    return JSON.parse(text).text[0];
+
   } catch (err) {
     console.log("Error: " + err);
   }
@@ -34,21 +35,10 @@ chrome.contextMenus.onClicked.addListener(async clickData => {
         .ref(`/${user.userid}/spanish/${selection}/`);
       await newRef.set({
         word: selection,
-        translation: translatedSelection[0],
+        translation: translatedSelection,
         learned: false
       });
     });
 
-    chrome.storage.sync.get(["total", "words"], items => {
-      if (!items.words) {
-        items.words = [];
-      }
-      let newTotal = items.total + 1 || 1;
-      let newWords = [
-        ...items.words,
-        { translation: translatedSelection, word: selection }
-      ];
-      chrome.storage.sync.set({ total: newTotal, words: newWords });
-    });
   }
 });

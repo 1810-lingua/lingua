@@ -1,21 +1,23 @@
 const replaceWords = () => {
-  chrome.storage.sync.get(["userid", "words"], (items) => {
+  chrome.storage.sync.get(["userid", "words"], items => {
     const dictionary = items.words;
-    const tabWords = [ ...document.getElementsByTagName("p") ];
+    const tabWords = [...document.getElementsByTagName("p")];
     tabWords.forEach(child => {
       if (child.innerText) {
-        const text = child.innerText;
+        let text = child.innerText;
         dictionary.forEach(word => {
           if (child.innerText.includes(word.word)) {
-            const re = new RegExp(word.word, "g");
+            if(word.learned === true){
+            let re = new RegExp(word.word, "g");
             text = text.replace(re, word.translation);
+            }
           }
         });
         child.innerText = text;
       }
     });
   });
-}
+};
 
 window.onload = function() {
   replaceWords();
