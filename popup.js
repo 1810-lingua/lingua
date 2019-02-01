@@ -10,101 +10,98 @@ $(function() {
 
   firebase.initializeApp(config);
 
-  document.getElementById("login-button").addEventListener("click", login);
+  chrome.storage.sync.get(["login"], items => {
+    if (items.login === "true") {
+      $("#popup-form").html(`<h2 class="ui header">Lingua
+      <i class="language icon"></i>
+      <div class="content">
+        <div class="sub header">Right Click Lingua Icon > Go to Options to see your saved words</div>
+      </div>
+    </h2>
+    <div id="login">
+      <button class="ui button" id="logout-button" type="submit">Log Out</button>
+    </div>
+    `);
+      $("#logout-button").click(event => {
+        handleLogOut(event);
+      });
+    } else {
+      $("#popup-form").html(`<form class="ui form log-form">
+    <h1>Welcome to Lingua</h1>
+    <div class="field">
+      <input id="username" type="text" placeholder="Email" />
+    </div>
+    <div class="field">
+      <input id="password" type="password" placeholder="Password" />
+    </div>
+    <div id="login">
+      <button class="ui button" id="login-button" type="submit">Login</button>
+      <button class="ui button" id="signup-button" type="submit">Sign Up</button>
+    </div>
+    </form>`);
+    }
+    $("#signup-button").click(event => {
+      handleSignUp(event);
+    });
 
-  handleSendAuth = async (evt) => {
+    $("#login-button").click(event => {
+      handleSendAuth(event);
+    });
+  });
+
+  handleSendAuth = async evt => {
     evt.preventDefault();
     const email = $("#username").val();
     const password = $("#password").val();
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       chrome.storage.sync.set({ login: "true" });
+      window.close();
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       alert(errorCode, "\n", errorMessage);
     }
-  }
-  
-  handleSignUp = async (evt) => {
+  };
+
+  handleSignUp = async evt => {
     evt.preventDefault();
     const email = $("#username").val();
     const password = $("#password").val();
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
       chrome.storage.sync.set({ login: "true" });
+      window.close();
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       alert(errorCode, "\n", errorMessage);
     }
-  }
+  };
 
-  firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+  handleLogOut = async evt => {
+    evt.preventDefault();
+    try {
+      await firebase.auth().signOut();
+      // signed out
+      chrome.storage.sync.set({ login: "false" });
+      window.close();
+    } catch (e) {
+      // an error
+      alert("error: " + e);
+    }
+  };
+
+  firebase.auth().onAuthStateChanged(async firebaseUser => {
     if (firebaseUser) {
       const { uid } = firebase.auth().currentUser;
       await firebase
         .database()
         .ref(`/users/${uid}`)
-        .on("value", (word) => {
+        .on("value", word => {
           const words = word.val();
           chrome.storage.sync.set({ words: words, userid: uid });
         });
     }
-  });
-
-  $("#signup-button").click(() => {
-    $("#login").html(`
-      <div class="log-form">
-        <h2>Sign Up for your account</h2>
-        <div id='authform'>
-          <input type="email" id="username" placeholder="email" />
-          <input type="password" id="password" placeholder="password" />
-          <button type="submit" id="gotAuth" class="btn">Submit</button>
-        </div>
-      </div>
-    `);
-    $("#gotAuth").click(event => {
-      handleSignUp(event);
-    });
-  });
-
-  $("#login-button").click(() => {
-    $("#login").html(`
-      <div class="log-form">
-        <h2>Sign In to your account</h2>
-        <div id='authform'>
-          <input type="email" id="username" placeholder="email" />
-          <input type="password" id="password" placeholder="password" />
-          <button type="submit" id="gotAuth" class="btn">Submit</button>
-        </div>
-      </div>
-    `);
-    $("#gotAuth").click(event => {
-      handleSendAuth(event);
-    });
-  });
-
-  chrome.storage.sync.get(["total", "words"], (items) => {
-    $("#total").text(items.total);
-  });
-
-  $("#addWord").click(() => {
-    chrome.storage.sync.get(["total", "words"], (items) => {
-      let newTotal = items.total + 1;
-      newTotal = items.total + 1;
-
-      chrome.storage.sync.set({ total: newTotal });
-      $("#total").text(newTotal);
-
-      const opt = {
-        type: "basic",
-        title: "Word Added",
-        message: "Your word has been added",
-        iconUrl: "icon.png"
-      };
-
-      chrome.notifications.create("wordAdded", opt, function() {});
-    });
   });
 });

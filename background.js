@@ -8,3 +8,14 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+chrome.storage.sync.get(["userid"], async user => {
+  if (user.userid){
+  firebase
+    .database()
+    .ref(`/${user.userid}/spanish`)
+    .on(`value`, snap => {
+      chrome.storage.sync.set({"words" : Object.values(snap.val())})
+    });
+  }
+});
