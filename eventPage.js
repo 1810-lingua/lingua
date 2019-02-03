@@ -11,13 +11,13 @@ const translate = async word => {
     "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
   const text = "&text=";
   const lang = "&lang=es";
-  const fullUrl = baseUrl + apiKey + lang + text + word;
+  let safeWord = word.replace(/[.]/gi, "");
+  const fullUrl = baseUrl + apiKey + lang + text + safeWord;
   try {
     const request = new Request(fullUrl, { method: "GET" });
     const response = await fetch(request);
     const text = await response.text();
     return JSON.parse(text).text[0];
-
   } catch (err) {
     console.log("Error: " + err);
   }
@@ -39,6 +39,5 @@ chrome.contextMenus.onClicked.addListener(async clickData => {
         learned: false
       });
     });
-
   }
 });
