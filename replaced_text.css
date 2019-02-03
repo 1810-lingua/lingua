@@ -1,0 +1,48 @@
+
+@keyframes background_change {
+  from {
+    background-color: yellow;
+  }
+  to {
+    background-color: none;
+  }
+}
+
+
+.translated {
+  animation-name: background_change;
+  animation-duration: 3s;
+}
+
+@media print {
+  .translated {
+    display: none;
+  }
+  .translated_print {
+    display: inline;
+  }
+}
+
+.translated_hovercard {
+  display: none;
+  background: yellow;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1000;
+}
+.translated:hover .translated_hovercard {
+  display: inline;
+}
+.translated:hover {
+  color: red;
+  opacity: 1;
+}
+.translated {
+  border-bottom: orange 1px dashed;
+  opacity: 0.85;
+}
+.translated_print {
+  display: none;
+}

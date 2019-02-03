@@ -7,9 +7,20 @@ const replaceWords = () => {
         let text = child.innerText;
         dictionary.forEach(word => {
           if (child.innerText.includes(` ${word.word} `)) {
-            if(word.learned === true){
-            let re = new RegExp(` ${word.word} `, "g");
-            text = text.replace(re, ` <span style= color:blue>${word.translation}</span> `);
+            if (word.learned === true) {
+              let re = new RegExp(` ${word.word} `, "g");
+              text = text.replace(
+                re,
+                ` <span class="translated">
+                      ${word.translation}
+                      <span class="translated_hovercard">
+                                  ${word.word}
+                      </span>
+                  </span>
+                  <span class="translated_print">
+                      ${word.word}
+                  </span>`
+              );
             }
           }
         });
