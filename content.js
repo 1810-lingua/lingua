@@ -14,7 +14,7 @@ const replaceWords = () => {
                 ` <span class="translated">
                       ${word.translation}
                       <span class="translated_hovercard">
-                                  ${word.word}
+                                ${word.word}
                       </span>
                   </span>
                   <span class="translated_print">

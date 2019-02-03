@@ -3,7 +3,7 @@
   "name": "Lingua",
   "description": "Lingua Language Learner",
   "version": "1.0",
-  "content_scripts": [
+  "content_scripts":[
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": ["content.js"],
