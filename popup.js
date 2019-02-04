@@ -10,21 +10,49 @@ $(function() {
 
   firebase.initializeApp(config);
 
-  chrome.storage.sync.get(["login"], items => {
+  chrome.storage.sync.get(["login", "languageText"], items => {
     if (items.login === "true") {
       $("#popup-form").html(`<h2 class="ui header">Lingua
+      
       <i class="language icon"></i>
       <div class="content">
         <div class="sub header">Right Click Lingua Icon > Go to Options to see your saved words</div>
       </div>
     </h2>
-    <div id="login">
+    <div>
+    <h3>Select Language</h3>
+    <div class="ui floating dropdown labeled search icon button">
+      <i class="world icon"></i>
+      <span class="text">${items.languageText ? items.languageText : "Select Language"}</span>
+      <div class="menu">
+      <div class="item">Spanish</div>
+        <div class="item">French</div>
+        <div class="item">German</div>
+        <div class="item">Italian</div>
+        <div class="item">Polish</div>
+        <div class="item">Portuguese</div>
+      </div>
+      </div>
+      <p>and refresh page for changes to be saved</p>
+      
+      <div id="login">
       <button class="ui button" id="logout-button" type="submit">Log Out</button>
+    </div>
     </div>
     `);
       $("#logout-button").click(event => {
         handleLogOut(event);
       });
+      $('.dropdown')
+  .dropdown({
+    onChange: function(value, text) {
+      // custom action
+      $('#dropdown').dropdown('set selected', value)
+      $('#dropdown').dropdown('set text', text)
+      chrome.storage.sync.set({languageText: text, languageValue: value})
+    }
+  })
+;
     } else {
       $("#popup-form").html(`<form class="ui form log-form">
     <h1>Welcome to Lingua</h1>
@@ -78,6 +106,10 @@ $(function() {
       alert(errorCode, "\n", errorMessage);
     }
   };
+  handleDropDown = () => {
+    let value = $('#dropdown').val()
+    console.log(value)
+  }
 
   handleLogOut = async evt => {
     evt.preventDefault();
