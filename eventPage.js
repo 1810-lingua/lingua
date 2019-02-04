@@ -11,7 +11,7 @@ const translate = async word => {
     "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
   const text = "&text=";
   const lang = "&lang=es";
-  let safeWord = word.replace(/[.]/gi, "");
+  let safeWord = encodeURI(word);
   const fullUrl = baseUrl + apiKey + lang + text + safeWord;
   try {
     const request = new Request(fullUrl, { method: "GET" });
