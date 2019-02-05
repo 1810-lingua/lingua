@@ -24,7 +24,7 @@
 
 .translated_hovercard {
   display: none;
-  background: yellow;
+  background: steelblue;
   margin-left: 10px;
   margin-top: 10px;
   padding: 10px;
@@ -35,7 +35,7 @@
   display: inline;
 }
 .translated:hover {
-  color: red;
+  color: powderblue;
   opacity: 1;
 }
 .translated {
