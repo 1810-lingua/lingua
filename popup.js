@@ -138,7 +138,7 @@ $(function() {
         .database()
         .ref(`/users/${uid}`)
         .on("value", word => {
-          const words = word.spanish.val();
+          const words = word.val();
           chrome.storage.sync.set({ words: words, userid: uid });
         });
     }
