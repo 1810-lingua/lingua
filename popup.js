@@ -10,20 +10,59 @@ $(function() {
 
   firebase.initializeApp(config);
 
-  chrome.storage.sync.get(["login"], items => {
+  chrome.storage.sync.get(["login", "languageText"], items => {
     if (items.login === "true") {
       $("#popup-form").html(`<h2 class="ui header">Lingua
+      
       <i class="language icon"></i>
       <div class="content">
         <div class="sub header">Right Click Lingua Icon > Go to Options to see your saved words</div>
       </div>
     </h2>
-    <div id="login">
+    <div>
+    <h3>Select Language</h3>
+    <div class="ui floating dropdown labeled search icon button">
+      <i class="world icon"></i>
+      <span class="text">${
+        items.languageText ? items.languageText : "Spanish"
+      }</span>
+      <div class="menu">
+      <div class="item">Spanish</div>
+        <div class="item">French</div>
+        <div class="item">German</div>
+        <div class="item">Italian</div>
+        <div class="item">Polish</div>
+        <div class="item">Portuguese</div>
+      </div>
+      </div>
+      <p>and refresh page for changes to be saved</p>
+      
+      <div id="login">
       <button class="ui button" id="logout-button" type="submit">Log Out</button>
+    </div>
     </div>
     `);
       $("#logout-button").click(event => {
         handleLogOut(event);
+      });
+      $(".dropdown").dropdown({
+        onChange: async function(value, text) {
+          chrome.storage.sync.get(["userid"], user => {
+            let userid = user.userid;
+            firebase
+              .database()
+              .ref(`/${userid}/${value}`)
+              .on(`value`, snap => {
+                chrome.storage.sync.set({
+                  words: Object.values(snap.val()),
+                  languageText: text,
+                  languageValue: value
+                });
+              });
+            $("#dropdown").dropdown("set selected", value);
+            $("#dropdown").dropdown("set text", text);
+          });
+        }
       });
     } else {
       $("#popup-form").html(`<form class="ui form log-form">
@@ -99,7 +138,7 @@ $(function() {
         .database()
         .ref(`/users/${uid}`)
         .on("value", word => {
-          const words = word.val();
+          const words = word.spanish.val();
           chrome.storage.sync.set({ words: words, userid: uid });
         });
     }
