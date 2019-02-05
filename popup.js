@@ -23,7 +23,9 @@ $(function() {
     <h3>Select Language</h3>
     <div class="ui floating dropdown labeled search icon button">
       <i class="world icon"></i>
-      <span class="text">${items.languageText ? items.languageText : "Select Language"}</span>
+      <span class="text">${
+        items.languageText ? items.languageText : "Spanish"
+      }</span>
       <div class="menu">
       <div class="item">Spanish</div>
         <div class="item">French</div>
@@ -43,16 +45,25 @@ $(function() {
       $("#logout-button").click(event => {
         handleLogOut(event);
       });
-      $('.dropdown')
-  .dropdown({
-    onChange: function(value, text) {
-      // custom action
-      $('#dropdown').dropdown('set selected', value)
-      $('#dropdown').dropdown('set text', text)
-      chrome.storage.sync.set({languageText: text, languageValue: value})
-    }
-  })
-;
+      $(".dropdown").dropdown({
+        onChange: async function(value, text) {
+          chrome.storage.sync.get(["userid"], user => {
+            let userid = user.userid;
+            firebase
+              .database()
+              .ref(`/${userid}/${value}`)
+              .on(`value`, snap => {
+                chrome.storage.sync.set({
+                  words: Object.values(snap.val()),
+                  languageText: text,
+                  languageValue: value
+                });
+              });
+            $("#dropdown").dropdown("set selected", value);
+            $("#dropdown").dropdown("set text", text);
+          });
+        }
+      });
     } else {
       $("#popup-form").html(`<form class="ui form log-form">
     <h1>Welcome to Lingua</h1>
@@ -106,10 +117,6 @@ $(function() {
       alert(errorCode, "\n", errorMessage);
     }
   };
-  handleDropDown = () => {
-    let value = $('#dropdown').val()
-    console.log(value)
-  }
 
   handleLogOut = async evt => {
     evt.preventDefault();
@@ -131,7 +138,7 @@ $(function() {
         .database()
         .ref(`/users/${uid}`)
         .on("value", word => {
-          const words = word.val();
+          const words = word.spanish.val();
           chrome.storage.sync.set({ words: words, userid: uid });
         });
     }
